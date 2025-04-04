@@ -1,0 +1,19 @@
+[package]
+name = "gtime"
+version = "0.1.0"
+edition = "2024"
+authors = ["Brendan Abbott"]
+description = "A CLI tool to convert timestamps between timezones"
+
+[profile.release]
+strip = "debuginfo"
+lto = true
+
+[dependencies]
+clap = { version = "4.4", features = ["derive"] }
+chrono = "0.4"
+chrono-tz = "0.8"
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.8"
+anyhow = "1.0"
+dirs = "6.0.0"

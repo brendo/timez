@@ -1,0 +1,10 @@
+# List of timezones to convert to
+# You can add or remove timezones as needed
+# See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for available options
+timezones = [
+    "America/Toronto",
+    "America/Los_Angeles",
+    "Europe/Berlin",
+    "Asia/Singapore",
+    "Australia/Brisbane"
+] 
