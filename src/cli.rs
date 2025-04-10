@@ -21,7 +21,7 @@ pub fn get_timezones(args: &Args) -> Result<Vec<String>> {
     }
 
     // Otherwise, try environment variable
-    if let Ok(tz) = env::var("GTIME_TIMEZONES") {
+    if let Ok(tz) = env::var("TIMEZ_TIMEZONES") {
         return Ok(tz.split(',').map(|s| s.trim().to_string()).collect());
     }
 
@@ -32,5 +32,5 @@ pub fn get_timezones(args: &Args) -> Result<Vec<String>> {
         }
     }
 
-    Err(anyhow!("No timezone specified. Use -z or --timezone to specify one or more timezones, set GTIME_TIMEZONES environment variable, or configure timezones in ~/.config/gtime/config.toml"))
+    Err(anyhow!("No timezone specified. Use -z or --timezone to specify one or more timezones, set TIMEZ_TIMEZONES environment variable, or configure timezones in ~/.config/timez/config.toml"))
 } 
