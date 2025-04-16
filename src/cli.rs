@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use clap::Parser;
 use std::env;
 
@@ -32,5 +32,7 @@ pub fn get_timezones(args: &Args) -> Result<Vec<String>> {
         }
     }
 
-    Err(anyhow!("No timezone specified. Use -z or --timezone to specify one or more timezones, set TIMEZ_TIMEZONES environment variable, or configure timezones in ~/.config/timez/config.toml"))
-} 
+    Err(anyhow!(
+        "No timezone specified. Use -z or --timezone to specify one or more timezones"
+    ))
+}

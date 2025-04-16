@@ -44,7 +44,11 @@ timez "2024-03-20 15:30:00"
 ```
 
 3. Configuration file (lowest priority):
-The default configuration file is `config.toml` in the home directory. You can modify it to include your preferred timezones:
+The default configuration file is `timezconfig.toml` in your OS's preferences directory:
+
+- Linux `$HOME/.config`
+- Windows `FOLDERID_RoamingAppData`
+- macOS `$HOME/Library/Preferences`
 
 ```toml
 timezones = [

@@ -1,6 +1,6 @@
+use anyhow::Result;
 use serde::Deserialize;
 use std::fs;
-use anyhow::Result;
 
 #[derive(Debug, Deserialize)]
 pub struct Config {
@@ -16,12 +16,11 @@ impl Config {
 }
 
 pub fn load_config() -> Result<Config> {
-    let home = dirs::home_dir().ok_or_else(|| anyhow::anyhow!("Could not find home directory"))?;
-    let config_path = home.join(".config").join("timez").join("config.toml");
-    
+    let config_path = dirs::preference_dir().unwrap().join("timezconfig.toml");
+
     if !config_path.exists() {
         return Ok(Config { timezones: vec![] });
     }
-    
+
     Config::from_file(config_path.to_str().unwrap())
-} 
+}
