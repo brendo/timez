@@ -2,7 +2,7 @@ use anyhow::{Result, anyhow};
 use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
 use chrono_tz::OffsetComponents;
 
-#[derive(Debug, Copy)]
+#[derive(Debug, Clone, Copy)]
 pub enum TimeFormat {
     RFC3339,
     ISO8601,
