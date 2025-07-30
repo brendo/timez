@@ -1,5 +1,5 @@
 use anyhow::{Result, anyhow};
-use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
+use chrono::{DateTime, NaiveDateTime, TimeZone, Utc, Local, NaiveTime};
 use chrono_tz::OffsetComponents;
 
 #[derive(Debug, Clone, Copy)]
@@ -9,6 +9,7 @@ pub enum TimeFormat {
     HumanReadable,
     Timestamp,
     Now,
+    TimeOnly,
 }
 
 pub fn parse_time(time_str: &str) -> Result<(String, DateTime<Utc>, TimeFormat)> {
@@ -54,8 +55,38 @@ pub fn parse_time(time_str: &str) -> Result<(String, DateTime<Utc>, TimeFormat)>
         ));
     }
 
+    // Try parsing as time-only format (e.g., '15:00' or '15:30')
+    if let Ok(time) = NaiveTime::parse_from_str(time_str, "%H:%M") {
+        let now = Local::now();
+        let today = now.date_naive();
+        let naive_datetime = today.and_time(time);
+        let local_datetime = Local.from_local_datetime(&naive_datetime).unwrap();
+        let utc_datetime = local_datetime.with_timezone(&Utc);
+
+        return Ok((
+            time_str.to_string(),
+            utc_datetime,
+            TimeFormat::TimeOnly,
+        ));
+    }
+
+    // Try parsing as time-only format with seconds (e.g., '15:00:30')
+    if let Ok(time) = NaiveTime::parse_from_str(time_str, "%H:%M:%S") {
+        let now = Local::now();
+        let today = now.date_naive();
+        let naive_datetime = today.and_time(time);
+        let local_datetime = Local.from_local_datetime(&naive_datetime).unwrap();
+        let utc_datetime = local_datetime.with_timezone(&Utc);
+
+        return Ok((
+            time_str.to_string(),
+            utc_datetime,
+            TimeFormat::TimeOnly,
+        ));
+    }
+
     Err(anyhow!(
-        "Invalid time format. Expected: timestamp, 'now', RFC3339 (e.g., '2024-01-01T12:00:00Z'), ISO8601 (e.g., '2024-01-01T12:00:00+00:00'), or date time string (e.g., '2024-01-01 12:00:00')"
+        "Invalid time format. Expected: timestamp, 'now', RFC3339 (e.g., '2024-01-01T12:00:00Z'), ISO8601 (e.g., '2024-01-01T12:00:00+00:00'), date time string (e.g., '2024-01-01 12:00:00'), or time only (e.g., '15:00' or '15:30:45')"
     ))
 }
 
@@ -76,6 +107,7 @@ pub fn format_timezone_output(
         TimeFormat::HumanReadable | TimeFormat::Timestamp | TimeFormat::Now => {
             converted.format("%Y-%m-%d %H:%M:%S")
         }
+        TimeFormat::TimeOnly => converted.format("%Y-%m-%d %H:%M:%S"),
     };
 
     if tz_name.is_empty() {

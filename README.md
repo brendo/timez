@@ -18,8 +18,11 @@ timez accepts timestamps in various formats and converts them to your configured
 # Convert current time to configured timezones
 timez "now"
 
-# Convert a specific time
+# Convert a specific date-time
 timez "2024-03-20 15:30:00"
+
+# Convert a specific time (assumes local date)
+timez "15:00"
 
 # Convert an ISO8601 timestamp
 timez "2024-03-20T15:30:00Z"
